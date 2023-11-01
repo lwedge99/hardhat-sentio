@@ -1,0 +1,27 @@
+{
+  "name": "hardhat-sentio",
+  "version": "1.0.0",
+  "repository": "git@github.com:lwedge99/hardhat-sentio.git",
+  "author": "longw <lwedge99@gmail.com>",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist/"
+  ],
+  "scripts": {
+    "build": "rm -rf ./dist && tsc --build ."
+  },
+  "dependencies": {
+    "@nomiclabs/hardhat-ethers": "^2.1.1",
+    "@types/node": "^20.8.6",
+    "typescript": "^5.2.2"
+  },
+  "devDependencies": {
+    "hardhat": "^2.10.2",
+    "ts-node": "^10.9.1"
+  },
+  "peerDependencies": {
+    "hardhat": "^2.10.2"
+  }
+}
