@@ -11,7 +11,7 @@ https://www.npmjs.com/package/@sentio/hardhat-sentio
 3. Modify `hardhat.config.ts`
 
 ```
-import "@sentio/hardhat-sentio
+import "@sentio/hardhat-sentio"
 
 const config: HardhatUserConfig = {
   sentio: {
@@ -24,5 +24,6 @@ const config: HardhatUserConfig = {
 
 ```
 npx hardhat sentio:upload Executor,Router
+
 npx hardhat sentio:verify --contract Router --address 0xE03441E04F1f602e8Eb3ab80735a79880CA05AE5 --chain 137
 ```
