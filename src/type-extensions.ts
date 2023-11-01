@@ -1,21 +1,21 @@
-import "hardhat/types/config";
-import "hardhat/types/runtime";
+import 'hardhat/types/config'
+import 'hardhat/types/runtime'
 
-import { SentioPlugin } from "./sentio-plugin";
-import { SentioConfig } from "./sentio/types";
+import { SentioPlugin } from './sentio-plugin'
+import { SentioConfig } from './sentio/types'
 
-declare module "hardhat/types/runtime" {
+declare module 'hardhat/types/runtime' {
   export interface HardhatRuntimeEnvironment {
-    sentio: SentioPlugin;
+    sentio: SentioPlugin
   }
 }
 
-declare module "hardhat/types/config" {
+declare module 'hardhat/types/config' {
   export interface HardhatUserConfig {
-    sentio?: SentioConfig;
+    sentio?: SentioConfig
   }
 
   export interface HardhatConfig {
-    sentio: SentioConfig;
+    sentio: SentioConfig
   }
 }
