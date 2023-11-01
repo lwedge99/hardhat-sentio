@@ -6,11 +6,16 @@ https://www.npmjs.com/package/@sentio/hardhat-sentio
 
 1. Login with sentio sdk first
 
-2. `yarn add -D @sentio/hardhat-sentio`
-
-3. Modify `hardhat.config.ts`
-
+``` bash
+yarn add -D @sentio/cli
+npx sentio login
 ```
+
+3. `yarn add -D @sentio/hardhat-sentio`
+
+4. Modify `hardhat.config.ts`
+
+``` typescript
 import "@sentio/hardhat-sentio"
 
 const config: HardhatUserConfig = {
