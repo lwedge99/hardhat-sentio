@@ -11,6 +11,10 @@ declare module "hardhat/types/runtime" {
 }
 
 declare module "hardhat/types/config" {
+  export interface HardhatUserConfig {
+    sentio?: SentioConfig;
+  }
+
   export interface HardhatConfig {
     sentio: SentioConfig;
   }

@@ -3,7 +3,7 @@ import {
     UploadUserCompilationResponse,
     VerifyContractRequest,
     VerifyContractResponse
-} from "./types/api";
+} from "./types";
 
 export class SentioService {
     public host: string
@@ -11,11 +11,11 @@ export class SentioService {
 
     constructor(host: string, apiKey?: string) {
         this.host = host
-        this.apiKey = apiKey || process.env.SENTIO_API_KEY
+        this.apiKey = apiKey
     }
 
     public async uploadUserCompilation(req: UploadUserCompilationRequest): Promise<UploadUserCompilationResponse> {
-        const url = this.host + "/api/v1/solidity/user_compilation"
+        const url = new URL("/api/v1/solidity/user_compilation", this.host)
         const res = await fetch(url, {
             method: "POST",
             headers: this.getHeaders(),
@@ -28,7 +28,7 @@ export class SentioService {
     }
 
     public async verifyContract(req: VerifyContractRequest): Promise<VerifyContractResponse> {
-        const url = this.host + "/api/v1/solidity/verification"
+        const url = new URL( "/api/v1/solidity/verification", this.host)
         const res = await fetch(url, {
             method: "POST",
             headers: this.getHeaders(),

@@ -1,6 +1,6 @@
 {
-  "name": "hardhat-sentio",
-  "version": "1.0.0",
+  "name": "@sentio/hardhat-sentio",
+  "version": "1.0.1",
   "repository": "git@github.com:sentioxyz/hardhat-sentio.git",
   "author": "longw <lwedge99@gmail.com>",
   "license": "MIT",

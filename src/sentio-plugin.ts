@@ -1,4 +1,4 @@
-import { Artifact, CompilationJob, DependencyGraph, HardhatRuntimeEnvironment } from "hardhat/types";
+import { CompilationJob, DependencyGraph, HardhatRuntimeEnvironment } from "hardhat/types";
 import { SentioService } from "./sentio/sentio-service";
 import {
     TASK_COMPILE_SOLIDITY_GET_COMPILATION_JOB_FOR_FILE,
@@ -6,45 +6,53 @@ import {
     TASK_COMPILE_SOLIDITY_GET_SOURCE_NAMES,
     TASK_COMPILE_SOLIDITY_GET_SOURCE_PATHS
 } from "hardhat/builtin-tasks/task-names";
+import { UploadUserCompilationRequest } from "./sentio/types";
+import { readKey } from "./sentio/key";
 
 export class SentioPlugin {
-    public env: HardhatRuntimeEnvironment;
-
+    private env: HardhatRuntimeEnvironment;
     private sentioService: SentioService;
 
     constructor(hre: HardhatRuntimeEnvironment) {
         console.log("creating sentio plugin");
 
         this.env = hre;
-        this.sentioService = new SentioService(
-            this.env.config.sentio.host || "https://app.sentio.xyz",
-            this.env.config.sentio.apiKey)
+        const host = this.env.config.sentio?.host || "https://app.sentio.xyz"
+        const apiKey = this.env.config.sentio?.apiKey || readKey(host)
+        const project = this.env.config.sentio?.project
 
-        console.log("created sentio plugin");
+        console.log("sentio config:", { host, project });
+
+        this.sentioService = new SentioService(host, apiKey)
     }
 
     public async upload(name: string) {
-        // const req = {
-        //     projectOwner: this.env.config.sentio.projectOwner,
-        //     projectSlug: this.env.config.sentio.projectSlug,
-        //     name,
-        //     compileSpec: undefined,
-        // }
+        console.log("uploading", name)
         const job = await getCompilationJob(this.env, name);
-        // const artifact: Artifact = this.env.artifacts.readArtifactSync(name);
-        const sources: {[path: string]: string} = {}
+        const source: {[path: string]: string} = {}
         for (const file of job.getResolvedFiles()) {
-            sources[file.absolutePath] = file.content.rawContent
+            source[file.sourceName] = file.content.rawContent
         }
-        const dbg = {
+        let req: UploadUserCompilationRequest = {
+            projectOwner: undefined,
+            projectSlug: undefined,
             name,
-            compilerSettings: job.getSolcConfig().settings,
-            version: job.getSolcConfig().version,
-            sources,
+            compileSpec: {
+                solidityVersion: job.getSolcConfig().version,
+                contractName: name,
+                multiFile: {
+                   compilerSettings: JSON.stringify(job.getSolcConfig().settings),
+                   source,
+                }
+            },
         }
-        console.dir(dbg, { depth: null })
-
-        // const res = await this.sentioService.uploadUserCompilation(req)
+        if (this.env.config.sentio.project) {
+            const [owner, slug] = this.env.config.sentio.project?.split("/")
+            req.projectOwner = owner
+            req.projectSlug = slug
+        }
+        const res = await this.sentioService.uploadUserCompilation(req)
+        console.log("successfully uploaded contract", name, res)
     }
 }
 

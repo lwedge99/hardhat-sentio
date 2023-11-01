@@ -28,13 +28,13 @@ export interface Verification {
 }
 
 export interface SourceSpec {
-    id: string;
+    id?: string;
     multiFile?: SourceMultiFile | undefined;
     standardJson?: { [key: string]: any } | undefined;
     metadata?: { [key: string]: any } | undefined;
     solidityVersion: string;
     contractName: string;
-    constructorArgs: string;
+    constructorArgs?: string;
 }
 
 export interface SourceMultiFile {
