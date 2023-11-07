@@ -87,6 +87,13 @@ export class SentioPlugin {
     }
     const res = await this.sentioService.uploadUserCompilation(req)
     console.log('successfully uploaded contract', contractName, res)
+    if (req.verifySpec) {
+      if (res.verified) {
+        console.log("successfully verified")
+      } else {
+        console.error("failed to verify the contract")
+      }
+    }
   }
 }
 
