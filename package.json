@@ -1,6 +1,6 @@
 {
   "name": "@sentio/hardhat-sentio",
-  "version": "1.0.6",
+  "version": "1.0.8",
   "repository": "git@github.com:sentioxyz/hardhat-sentio.git",
   "license": "MIT",
   "main": "dist/index.js",

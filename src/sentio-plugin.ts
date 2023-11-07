@@ -19,13 +19,14 @@ export class SentioPlugin {
   private sentioService: SentioService
 
   constructor(hre: HardhatRuntimeEnvironment) {
-    console.log('creating sentio plugin')
-
+    console.log('initializing sentio plugin')
     this.env = hre
     const host = this.env.config.sentio?.host || 'https://app.sentio.xyz'
-    const apiKey = this.env.config.sentio?.apiKey || readKey(host)
     const project = this.env.config.sentio?.project
-
+    const apiKey = this.env.config.sentio?.apiKey || readKey(host)
+    if (!apiKey) {
+      console.log("missing api key, please login with sentio CLI first")
+    }
     console.log('sentio config:', { host, project })
 
     this.sentioService = new SentioService(host, apiKey)
@@ -53,8 +54,8 @@ export class SentioPlugin {
         }
       }
     }
-    if (this.env.config.sentio.project) {
-      const [owner, slug] = this.env.config.sentio.project?.split('/')
+    if (this.env.config.sentio?.project) {
+      const [owner, slug] = this.env.config.sentio.project.split('/')
       req.projectOwner = owner
       req.projectSlug = slug
     }
